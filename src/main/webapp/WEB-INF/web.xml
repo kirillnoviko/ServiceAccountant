@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>MainServlet</servlet-name>
-        <servlet-class>com.accountant.servlet.ServletAccountant</servlet-class>
+        <servlet-class>com.accountant.servlet.ServletAccountantByID</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MainServlet</servlet-name>
