@@ -11,8 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.List;
 
 @WebServlet(urlPatterns = { "/accountant" })
@@ -32,6 +31,7 @@ public class ServletAccountant extends HttpServlet {
         RepositoryAccountant repositoryAccountant =new RepositoryAccountantImpl() ;
         List<Accountant> accountant=repositoryAccountant.findAll();
 
+
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -45,17 +45,36 @@ public class ServletAccountant extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        Gson g = new Gson();
+        Accountant accountant = g.fromJson(request.getReader(), Accountant.class);
+        RepositoryAccountant repositoryAccountant =new RepositoryAccountantImpl() ;
+        repositoryAccountant.save(accountant);
+
+
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(200);
+        out.print(accountant);
+        out.flush();
+
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Gson g = new Gson();
+        Accountant accountant = g.fromJson(request.getReader(), Accountant.class);
+        RepositoryAccountant repositoryAccountant =new RepositoryAccountantImpl() ;
+        repositoryAccountant.update(accountant);
 
+
+        PrintWriter out = response.getWriter();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(200);
+        out.print(accountant);
+        out.flush();
     }
 }

@@ -22,11 +22,12 @@ public class ServletAccountantByID extends HttpServlet {
 
 
     private static final long serialVersionUID = 1L;
-    private Gson gson = new Gson();
+
 
     public ServletAccountantByID() {
         super();
     }
+
 
 
     @Override
@@ -36,63 +37,32 @@ public class ServletAccountantByID extends HttpServlet {
             Long id= ParserRequest.ParseRequestLong(request);
             RepositoryAccountant repositoryAccountant =new RepositoryAccountantImpl() ;
             Accountant accountant=repositoryAccountant.findOne(id);
-            String employeeJsonString = this.gson.toJson(accountant);
+
 
             PrintWriter out = response.getWriter();
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
-            out.print(employeeJsonString);
+            out.print(accountant);
             out.flush();
 
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Accountant accountant= new Accountant();
-        accountant.setTask("post");
-        accountant.setId(12l);
-
-        String employeeJsonString = this.gson.toJson(accountant);
-
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(employeeJsonString);
-        out.flush();
-    }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Accountant accountant= new Accountant();
-        accountant.setTask("delete");
-        accountant.setId(122l);
-
-        String employeeJsonString = this.gson.toJson(accountant);
+        Long id= ParserRequest.ParseRequestLong(request);
+        RepositoryAccountant repositoryAccountant =new RepositoryAccountantImpl() ;
+        repositoryAccountant.delete(id);
 
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        out.print(employeeJsonString);
+        response.setStatus(201);
         out.flush();
     }
 
-    @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Accountant accountant= new Accountant();
-        accountant.setTask("22312");
-        accountant.setId(121232l);
 
-        String employeeJsonString = this.gson.toJson(accountant);
-
-        PrintWriter out = response.getWriter();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        out.print(employeeJsonString);
-        out.flush();
-    }
 }
 
 

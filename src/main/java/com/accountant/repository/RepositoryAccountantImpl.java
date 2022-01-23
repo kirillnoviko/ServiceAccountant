@@ -1,6 +1,9 @@
 package com.accountant.repository;
 
 import com.accountant.domain.Accountant;
+import com.accountant.util.HibernateSessionFactory;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,45 +11,70 @@ import java.util.List;
 public class RepositoryAccountantImpl implements  RepositoryAccountant{
     @Override
     public List<Accountant> findAll() {
-
-        Accountant accountant=new Accountant();
-        Accountant accountant1=new Accountant();
-        accountant.setId(8l);
-        accountant.setTask("sgdfg");
-        accountant1.setId(8l);
-        accountant1.setTask("sgdfg");
-        List<Accountant> accountants=new ArrayList<>();
-        accountants.add(accountant);
-        accountants.add(accountant1);
-        return accountants;
+        List users =
+                HibernateSessionFactory
+                        .getSessionFactory()
+                        .openSession()
+                        .createQuery("select a from Accountant a").getResultList();
+        return users;
     }
 
     @Override
     public Accountant findOne(Long id) {
-        Accountant accountant=new Accountant();
-        accountant.setId(8l);
-        accountant.setTask("sgdfg");
-        return accountant;
+        return HibernateSessionFactory.getSessionFactory().openSession().get(Accountant.class, id);
     }
 
     @Override
     public Accountant save(Accountant entity) {
-        return null;
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+
+        session.save(entity);
+
+        tx1.commit();
+        session.close();
+        return entity;
     }
 
     @Override
     public Accountant update(Accountant entity) {
-        return null;
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
+
+        session.update(entity);
+
+        tx1.commit();
+        session.close();
+        return entity;
     }
 
     @Override
     public void delete(Long id) {
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        Transaction tx1 = session.beginTransaction();
 
+        Accountant entity =session.get(Accountant.class,id);
+        session.delete(entity);
+
+        tx1.commit();
+        session.close();
     }
 
     @Override
     public List<Accountant> findByDateAndNotTracker() {
         return null;
+    }
+
+    @Override
+    public List<Accountant> findByUserId(Long id) {
+        List users =
+                HibernateSessionFactory
+                        .getSessionFactory()
+                        .openSession()
+                        .createQuery("select a from Accountant a where a.userId = ?")
+                        .setParameter(0,id)
+                        .getResultList();
+        return users;
     }
 
     @Override

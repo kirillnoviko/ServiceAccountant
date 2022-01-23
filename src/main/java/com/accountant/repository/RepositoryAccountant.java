@@ -7,6 +7,6 @@ import java.util.List;
 public interface RepositoryAccountant extends CrudOperations<Accountant,Long>{
 
     List<Accountant> findByDateAndNotTracker();
-
+    List<Accountant> findByUserId(Long id);
     List<Accountant> findByDataAllDeveloper();
 }
